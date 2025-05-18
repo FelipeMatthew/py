@@ -4,13 +4,14 @@ import subprocess
 import pyautogui
 import os
 
+# Configurações do pyautogui
 pyautogui.PAUSE = 0.5
 pyautogui.FAILSAFE = True
 
+# Caminho do executável do Riot Client
 VALORANT_PATH = r"C:\Riot Games\Riot Client\RiotClientServices.exe"
 
 # Coordenadas
-
 # AJUSTAR COORDENADAS CONFORME JANELAS ABERTAS / TAMANHO DA TELA 
 NAVBAR_COORDS = (462, 1065)  
 USERNAME_COORDS = (279, 372)
@@ -38,7 +39,6 @@ def select_account(accounts):
         else:
             print("Número inválido!")
             return None
-
     else:
         for account in accounts:
             if account['name'].lower() == choice.lower():
@@ -76,7 +76,7 @@ def login_valorant(account):
         print("Navegando para o botão de login...")
         for _ in range(7):
             pyautogui.press('tab')
-            time.sleep(0.3)
+            time.sleep(0.1)
 
         pyautogui.press('enter')
         print("Login iniciado. Aguarde o cliente processar...")
@@ -95,7 +95,12 @@ def login_valorant(account):
         print(f"Erro durante o processo: {e}")
 
 def main():
-    accounts = load_accounts('accounts.json')
+    # Caminho dinâmico para accounts.json baseado no diretório do script
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    json_path = os.path.join(script_dir, 'accounts.json')
+
+    # Carregar as contas do arquivo JSON
+    accounts = load_accounts(json_path)
     
     selected_account = select_account(accounts)
     if selected_account:
